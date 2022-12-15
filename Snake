@@ -1,0 +1,94 @@
+# Import the turtle module for drawing
+import turtle
+
+# Import the random module for generating random numbers
+import random
+
+# Set the screen size
+turtle.setup(400, 400)
+
+# Create a screen
+screen = turtle.Screen()
+
+# Set the screen's title
+screen.title("Snake")
+
+# Create a turtle for drawing the snake's body
+snake = turtle.Turtle()
+
+# Set the turtle's speed
+snake.speed(0)
+
+# Set the turtle's shape
+snake.shape("square")
+
+# Set the turtle's color
+snake.color("green")
+
+# Set the turtle's initial position to the center of the screen
+snake.penup()
+snake.goto(0, 0)
+
+# Set the turtle's initial direction to the right
+snake.setheading(90)
+
+# Create a turtle for drawing the snake's food
+food = turtle.Turtle()
+
+# Set the turtle's shape
+food.shape("circle")
+
+# Set the turtle's color
+food.color("red")
+
+# Set the turtle's initial position to a random spot on the screen
+food.penup()
+food.goto(random.randint(-150, 150), random.randint(-150, 150))
+
+# Function for moving the snake
+def move():
+  # Get the snake's current position
+  x = snake.xcor()
+  y = snake.ycor()
+
+  # Get the snake's current heading
+  heading = snake.heading()
+
+  # If the snake's heading is towards the right, increment its x-coordinate
+  if heading == 90:
+    x += 20
+  # If the snake's heading is towards the left, decrement its x-coordinate
+  elif heading == 270:
+    x -= 20
+  # If the snake's heading is towards the top, increment its y-coordinate
+  elif heading == 0:
+    y += 20
+  # If the snake's heading is towards the bottom, decrement its y-coordinate
+  elif heading == 180:
+    y -= 20
+
+  # Set the snake's new position
+  snake.goto(x, y)
+
+  # Check if the snake has collided with the food
+  if snake.distance(food) < 20:
+    # If the snake has collided with the food, generate new food in a random spot on the screen
+    food.goto(random.randint(-150, 150), random.randint(-150, 150))
+
+# Function for changing the snake's direction
+def change_direction(x, y):
+  # Set the snake's heading to the new direction
+  snake.setheading(snake.towards(x, y))
+
+# Set the screen's onclick event
+screen.onclick(change_direction)
+
+# Set the screen's onkeypress event
+screen.onkeypress(move, "space")
+
+# Listen for events on the screen
+screen.listen()
+
+# Main loop
+while True:
+  move()
